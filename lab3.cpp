@@ -4,31 +4,22 @@
 // lab3 code should be located here!
 //
 
-
-unsigned int lab3_thread_graph_id() 
+unsigned int lab3_thread_graph_id()
 {
-    return 999;
+    return 16;
 }
 
 const char* lab3_unsynchronized_threads()
 {
-    return "xyz";
+    return "bcfe";
 }
 
 const char* lab3_sequential_threads()
 {
-    return "rst,tuvw";
+    return "ehi";
 }
 
 int lab3_init()
 {
-    // ...
-    
-    CreateThread(...);
-    // ...
-
-    WaitForMultipleObjects(...);
-    // ...
-    
     return 0;
 }
