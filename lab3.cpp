@@ -110,7 +110,7 @@ void state_6(); //Wait K, I;
 
 //Utils
 //Create thread, handles errors
-HANDLE create_thread(DWORD (*thrd_fun)(LPVOID));
+HANDLE create_thread(DWORD(WINAPI* thrd_fun)(LPVOID));
 //Wait all threads for created, and finished
 void wait_threads(const std::list<char>& thread_names);
 //Locks stdout mutex before printing
@@ -150,9 +150,9 @@ int lab3_init()
     return 0;
 }
 
-HANDLE create_thread(DWORD (*thrd_fun)(LPVOID))
+HANDLE create_thread(DWORD(WINAPI* thrd_fun)(LPVOID))
 {
-    HANDLE out = CreateThread(NULL, 0, thrd_fun, NULL, 0, NULL);
+    HANDLE out = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)thrd_fun, NULL, 0, NULL);
     if (out)
         return out;
     std::cerr << "Cannot create thread, error code: " << GetLastError() << std::endl;
