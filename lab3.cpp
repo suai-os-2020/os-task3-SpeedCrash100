@@ -163,32 +163,35 @@ void wait_threads(const std::list<char>& thread_names)
 {
     for (auto ch : thread_names) {
         //Wait for creation
-        while (threads_map.find(ch) == threads_map.end())
-            ;
+        while (threads_map.find(ch) == threads_map.end()) {
+            Sleep(0);
+        };
         //Wait for execute
-        while (WaitForSingleObject(threads_map[ch], 0) == WAIT_TIMEOUT)
-            ;
+        while (WaitForSingleObject(threads_map[ch], 0) == WAIT_TIMEOUT) {
+            Sleep(0);
+        }
     }
 }
 
 void print_char_threadsafe(char c)
 {
     while (WaitForSingleObject(stdout_mutex, 0) == WAIT_TIMEOUT)
-        ;
+        Sleep(0);
     std::cout << c << std::flush;
     ReleaseMutex(stdout_mutex);
 }
 
 void wait_for_stage(int stage)
 {
-    while (currentStage < stage)
-        ;
+    while (stage > currentStage) {
+        Sleep(0);
+    }
 }
 
 void processing_add(char ch)
 {
     while (WaitForSingleObject(app_mutex, 0) == WAIT_TIMEOUT)
-        ;
+        Sleep(0);
     processing.insert(ch);
     ReleaseMutex(app_mutex);
 }
@@ -196,7 +199,7 @@ void processing_add(char ch)
 void processing_del(char ch)
 {
     while (WaitForSingleObject(app_mutex, 0) == WAIT_TIMEOUT)
-        ;
+        Sleep(0);
     processing.erase(ch);
     ReleaseMutex(app_mutex);
 }
@@ -363,6 +366,7 @@ void state_1() //Wait A; Run E, B, C, F
 {
     wait_threads({ 'a' });
     while (!processing.empty()) {
+        Sleep(0);
     }
     currentStage = 1;
     threads_map['e'] = create_thread(thread_e);
@@ -374,6 +378,7 @@ void state_2() //Wait C; Run D, G
 {
     wait_threads({ 'c' });
     while (!processing.empty()) {
+        Sleep(0);
     }
     currentStage = 2;
     threads_map['d'] = create_thread(thread_d);
@@ -383,6 +388,7 @@ void state_3() //Wait B, D; Run H
 {
     wait_threads({ 'b', 'd' });
     while (!processing.empty()) {
+        Sleep(0);
     }
     currentStage = 3;
     threads_map['h'] = create_thread(thread_h);
@@ -391,6 +397,7 @@ void state_4() //Wait G, F; Run I
 {
     wait_threads({ 'g', 'f' });
     while (!processing.empty()) {
+        Sleep(0);
     }
     currentStage = 4;
     threads_map['i'] = create_thread(thread_i);
@@ -399,6 +406,7 @@ void state_5() //Wait E, H; Run K;
 {
     wait_threads({ 'e', 'h' });
     while (!processing.empty()) {
+        Sleep(0);
     }
     currentStage = 5;
     threads_map['k'] = create_thread(thread_k);
@@ -408,6 +416,7 @@ void state_6() //Wait K, I
 {
     wait_threads({ 'k', 'i' });
     while (!processing.empty()) {
+        Sleep(0);
     }
     currentStage = 6;
 }
